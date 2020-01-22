@@ -118,4 +118,4 @@ For some reason detected points are not arranged as linestrings in the right ord
     WHERE 
         trx.objid = sub.objid;
         
-For initial CREATE'ing used tables run attached <create.sql>
+For initial CREATE'ing used tables run attached <pg_create_tables.sql> and check used coordinate system in that file. Also check if you already created the table 'tracks_centroids', if not change first line of sql_9.sql for inital try.

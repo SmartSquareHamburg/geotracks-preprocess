@@ -1,0 +1,1 @@
+COPY tracks_raw(frame,objid,u,v,width,height,objtype,unknown1,unknown2,unknown3) FROM STDIN DELIMITER ',' CSV

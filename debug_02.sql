@@ -1,0 +1,1 @@
+SELECT COUNT(*) FROM tracks_raw WHERE camname IS NULL OR timestamp IS NULL OR videopart IS NULL

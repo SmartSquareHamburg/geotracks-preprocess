@@ -1,0 +1,1 @@
+INSERT INTO trx_persec_vlines (camname, timestamp, objid, objtype, objtype_lo, startframe, num, geom, videopart) SELECT camname, timestamp, objid, objtype, objtype_long, startframe, num, ST_MULTI(geom), videopart FROM trx_persec_lines WHERE ST_ISVALID(geom) = true AND camname = STDIN1 AND timestamp = STDIN2 AND videopart = STDIN3

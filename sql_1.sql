@@ -1,0 +1,1 @@
+COPY cam_pixelpoints(x,y,u,v) FROM STDIN DELIMITER ',' CSV HEADER

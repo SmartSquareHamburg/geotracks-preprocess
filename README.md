@@ -76,28 +76,28 @@ Seem to work faster if you create a spatial index on the reference table before 
 
 E. g. with:
     
-    CREATE INDEX cam-pixelpts-idx ON cam-pixelpoints USING GIST(geom);
+    CREATE INDEX cam_pixelpts_idx ON cam_pixelpoints USING GIST(geom);
 
 As sql queries on large tables tend to run endless there is the possibility to cancel them from another psql instance and re-run them
 
 E. g. with:
     
-    SELECT pid, pg-stat-activity.query-start, state FROM pg-stat-activity;
-    SELECT pg-cancel-backend(<pid>);
+    SELECT pid, pg_stat_activity.query_start, state FROM pg_stat_activity;
+    SELECT pg_cancel_backend(<pid>);
 
 At the end it turned out that best practice is to run every dataset one by one and dump every single part to your drive instead of appending rows to a super-large table. So run these scripts and dump then truncate data to go with the next one.
 
 E. g. like:
 
-    TRUNCATE tracks-raw;
-    TRUNCATE tracks-centroids;
-    TRUNCATE trx-persec-lines;
-    TRUNCATE trx-persec-vlines;
+    TRUNCATE tracks_raw;
+    TRUNCATE tracks_centroids;
+    TRUNCATE trx-persec_lines;
+    TRUNCATE trx-persec_vlines;
     
 And:
 
     DROP INDEX IF EXISTS cam-pixelpts-idx;
-    TRUNCATE cam-pixelpoints;
+    TRUNCATE cam_pixelpoints;
 
 For some reason detected points are not arranged as linestrings in the right order. If this happens use the following sql query to rectify that.
 
@@ -117,3 +117,5 @@ For some reason detected points are not arranged as linestrings in the right ord
     ) AS sub 
     WHERE 
         trx.objid = sub.objid;
+        
+For initial CREATE'ing used tables run attached <create.sql>

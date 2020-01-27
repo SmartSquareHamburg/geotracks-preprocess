@@ -72,15 +72,6 @@ Python 3.6
 PostgreSQL 10
 
 # UPDATE
-## Spatial Indices
-
-You'll definitely profit of creating a spatial index between executing `x_01_newReference.py` and `x_02_newData.py` with
-    
-    CREATE INDEX cam_pixelpts_idx ON cam_pixelpoints USING GIST(geom);
-
-## Autovacuum
-At the end it turned out that best practice is to run every dataset one by one and dump every single part to your drive instead of appending rows to a super-large table. So run these scripts and dump your result, then truncate data to go on with the next one. The default `autovacuum` method of PostgreSQL will run queries on your tables in the background preventing you of edit these tables. Unfortunately this will cost you a lot of time.
-
 # Order of linestring break points
 For some reason detected points are not arranged as linestrings in the right order. If this happens use the following sql query to rectify that.
 
@@ -104,4 +95,5 @@ For some reason detected points are not arranged as linestrings in the right ord
 ## Create table
 For initial SQL CREATE'ing used tables run attached `pg_create_tables.sql` and check used coordinate system in that file. Also check if you already created the table `tracks_centroids`, if not change first line of `sql_9.sql` for inital try.
 
-
+## Autovacuum
+At the end it turned out that best practice is to run every dataset one by one and dump every single part to your drive instead of appending rows to a super-large table. So run these scripts and dump your result, then truncate data to go on with the next one. The default `autovacuum` method of PostgreSQL will run queries on your tables in the background preventing you of edit these tables. Unfortunately this will cost you a lot of time.

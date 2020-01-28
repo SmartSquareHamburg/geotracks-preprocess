@@ -37,9 +37,10 @@ if(len(sys.argv) <= 1):
 
 else:
 	# connection to database
+	# connection = 'host=csl.local.hcuhh.de port=5432 dbname=smsq user=postgres password=downtozero'
 	connection = 'host=localhost port=5432 dbname=smsq user=postgres password=postgres'
 	# pathname
-	path = "C:/CSL/geoDetections/"
+	path = "C:/CSL/mapz/geoDetections/"
 
 	# args via console
 	targets = str(sys.argv[1])
@@ -87,12 +88,14 @@ else:
 			if debug1res[0]['count'] == 0:
 				print('No problems identified. Will proceed now.')
 				end1 = datetime.now()  # stat
-				print(str(datetime.now()) + ' : This took you ' + str((end1-start1).seconds + 1) + ' second(s).\n\n')  # stat
+				print(str(datetime.now()) + ' : Finished with ' + str((end1-start1).seconds + 1) + ' second(s).\n\n')  # stat
 
 	# --- main #1
 	# --- load new target data to table
 
 				print('working on step 1/2...')
+				print('DROP INDEX')
+				print('COPY FROM ' + targets) 
 				start2 = datetime.now()  # stat
 
 				with open(path + "sql_1.sql", 'r') as sql1:
@@ -100,12 +103,14 @@ else:
 
 				cursor.execute(sql1_)
 				end2 = datetime.now()  # stat
-				print(str(datetime.now()) + ' : This took you ' + str((end2-start2).seconds + 1) + ' second(s).\n')
+				print(str(datetime.now()) + ' : Finished with ' + str((end2-start2).seconds + 1) + ' second(s).\n')
 
 	# --- main #2
 	# --- add camname, timestamp, videopart to raw-data
 
 				print('working on step 2/2...')
+				print('UPDATE')
+				print('CREATE INDEX')
 				start3 = datetime.now()  # stat
 
 				with open(path + "sql_2.sql", 'r') as sql2:
@@ -113,12 +118,12 @@ else:
 
 				cursor.execute(sql2_)
 				end3 = datetime.now()  # stat
-				print(str(datetime.now()) + ' : This took you ' + str((end3-start3).seconds + 1) + ' second(s).')  # stat
+				print(str(datetime.now()) + ' : Finished with ' + str((end3-start3).seconds + 1) + ' second(s).')  # stat
 
 	# --- main - handle identified errors
 			else:
 				print("""There's reference data available. Please check if it fits your purposes.""")
 				end1 = datetime.now()  # stat
-				print(str(datetime.now()) + ' : This took you ' + str((end1-start1).seconds + 1) + ' seconds')
+				print(str(datetime.now()) + ' : Finished with ' + str((end1-start1).seconds + 1) + ' seconds')
 
 	print('\n\n\nDone.\n\n')

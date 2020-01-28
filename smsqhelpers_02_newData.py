@@ -36,9 +36,10 @@ if(len(sys.argv) <= 1):
 
 else:
 	# connection to database
+	# connection = 'host=csl.local.hcuhh.de port=5432 dbname=smsq user=postgres password=downtozero'
 	connection = 'host=localhost port=5432 dbname=smsq user=postgres password=postgres'
 	# pathname
-	path = "C:/CSL/geoDetections/"
+	path = "C:/CSL/mapz/geoDetections/"
 
 	# args via console
 	tracks = str(sys.argv[1])  # tracks_[].txt
@@ -93,13 +94,14 @@ else:
 		if debug2res[0]['count'] == 0:
 			print('No problems identified. Will proceed now.')
 			end1 = datetime.now()  # stat
-			print(str(datetime.now()) + ' : This took you ' + str((end1-start1).seconds + 1) + ' second(s).\n\n')  # stat
+			print(str(datetime.now()) + ' : Finished with ' + str((end1-start1).seconds + 1) + ' second(s).\n\n')  # stat
 
 	# --- main #6
 	# --- load new tracking data to table
 
 			with dbconn.cursor() as cursor:
-				print('working on step 1/5...')
+				print('working on step 1/6...')
+				print('COPY FROM ' + tracks)
 				start2 = datetime.now()  # stat
 
 				with open(path + "sql_6.sql", 'r') as sql6:
@@ -107,7 +109,7 @@ else:
 
 				cursor.execute(sql6_)
 				end2 = datetime.now()  # stat
-				print(str(datetime.now()) + ' : This took you ' + str((end2-start2).seconds + 1) + ' second(s).\n')  # stat
+				print(str(datetime.now()) + ' : Finished with ' + str((end2-start2).seconds + 1) + ' second(s).\n')  # stat
 				
 				cursor.close()
 
@@ -118,9 +120,18 @@ else:
 	#  9: create lines from point data
 	# 10: drop invalid lines
 
+			step = [
+				'UPDATE',
+				'UPDATE (match)',
+				'INSERT (centroids)',
+				'INSERT (lines)',
+				'INSERT (vlines)\nUPDATE'
+			]
+
 			for i in range(7, 12):  # sql_7.sql to sql_11.sql  # TODO: get range from data
 				with dbconn.cursor() as cursor:
 					print('working on step ' + str(i-5) + '/6...')
+					print(step[i-7])
 					starti = datetime.now()  # stat
 
 					with open(path + "sql_" + str(i) + ".sql", 'r') as sql:
@@ -128,7 +139,7 @@ else:
 
 					cursor.execute(sql_)
 					endi = datetime.now()  # stat
-					print(str(datetime.now()) + ' : This took you ' + str((endi-starti).seconds + 1) + ' second(s).\n')  # stat
+					print(str(datetime.now()) + ' : Finished with ' + str((endi-starti).seconds + 1) + ' second(s).\n')  # stat
 					
 					cursor.close()
 
@@ -137,3 +148,4 @@ else:
 			print("""There's still data to be processed, please check first.\n""")
 
 	print('\n\nDone.\n\n')
+	

@@ -72,28 +72,6 @@ Python 3.6
 PostgreSQL 10
 
 # UPDATE
-# Order of linestring break points
-For some reason detected points are not arranged as linestrings in the right order. If this happens use the following sql query to rectify that.
-
-    UPDATE 
-        trx_persec_vlines AS trx 
-    SET 
-        geom = sub.geom 
-    FROM (
-        SELECT 
-            objid, ST_MAKELINE(centroid) AS geom 
-        FROM 
-            tracks_centroids 
-        GROUP BY 
-            objid, objtype, startFrame 
-        ORDER BY 
-            objid
-    ) AS sub 
-    WHERE 
-        trx.objid = sub.objid;
-   
-`TODO` Is this because of spatial indexing with GIST()? Due to "A GiST index is lossy, meaning that the index might produce false matches" ([Source](https://www.postgresql.org/docs/10/textsearch-indexes.html))
-
 ## Create table
 For initial SQL CREATE'ing used tables run attached `pg_create_tables.sql` and check used coordinate system in that file. Also check if you already created the table `tracks_centroids`, if not change first line of `sql_9.sql` for inital try.
 
